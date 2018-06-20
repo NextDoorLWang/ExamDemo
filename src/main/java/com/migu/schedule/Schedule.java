@@ -166,7 +166,10 @@ public class Schedule {
 
             HashMap<Integer,ServiceObject> serviceObjectMap =MainService.getServiceObjectMap();
 
+            for(Iterator<Map.Entry<Integer,Integer>> itTask=taskList.iterator();itTask.hasNext();) {
 
+
+            }
 
 
 
