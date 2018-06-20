@@ -151,7 +151,9 @@ public class Schedule {
         if (threshold<=0){
             return ReturnCodeKeys.E002;
         }
+        HashMap<Integer,TaskInfo> taskMap=MainService.getTaskInfoHashMap();
         HashMap<Integer,Integer> serviceConsumptionMap=MainService.getServiceConsumptionMap();
+        HashMap<Integer,Integer> taskConsumptionMap=MainService.getTaskConsumptionMap();
         Queue<TaskInfo> query=MainService.getWaitTaskInfoQueue();
         //待执行任务不为空时
         if (query!=null){
@@ -165,10 +167,16 @@ public class Schedule {
              Collections.sort(taskList,vc);
 
             HashMap<Integer,ServiceObject> serviceObjectMap =MainService.getServiceObjectMap();
-
+            int index=0;
             for(Iterator<Map.Entry<Integer,Integer>> itTask=taskList.iterator();itTask.hasNext();) {
-
-
+                Integer taskConsumption=taskConsumptionMap.get(itTask.next());
+                ServiceObject serviceObject=serviceObjectMap.get(serviceList.get(index).getKey());
+                serviceObject.getTaskInfoQueue().add(taskMap.get(itTask.next()));
+                index+=1;
+                serviceConsumptionMap.put(serviceList.get(index).getKey(),serviceConsumptionMap.get(serviceList.get(index).getKey())+taskConsumption);
+                if(index>serviceObjectMap.keySet().size()){
+                    index=0;
+                }
             }
 
 
